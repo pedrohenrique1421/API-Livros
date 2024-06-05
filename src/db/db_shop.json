@@ -1,0 +1,9 @@
+[
+    {
+        "id": 0,
+        "nome": "Teste",
+        "preco": 999.9,
+        "sinopse": "sinopse boa hein",
+        "quantidade": 999
+    }
+]

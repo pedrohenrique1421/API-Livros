@@ -1,13 +1,11 @@
 import {Router} from "express";
-import { bookGetManager } from "../managers/books.js";
+import { bookGetManager, bookPostManager } from "../managers/books.js";
 
 const bookRoute = Router();
 
 bookRoute.get("/", bookGetManager);
 
-bookRoute.post("/", (req, res) => {
-	res.send("Requisição POST");
-});
+bookRoute.post("/", bookPostManager);
 
 bookRoute.patch("/", (req, res) => {
 	res.send("Requisição PATCH");
