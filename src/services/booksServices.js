@@ -1,18 +1,40 @@
 import fs from "fs";
+import {dataTestfierOfNewBook} from "../db/db_Manager/dataTestfiers.js";
+
+const db = JSON.parse(fs.readFileSync("./src/db/db_shop.json"));
 
 const getBooks = () => {
-	return JSON.parse(fs.readFileSync("./src/db/db_shop.json"));
+	if (db.length == 0) {
+		return false;
+	} else {
+		return db;
+	}
 };
 
 const getBookById = (idOfbook) => {
-	const db = JSON.parse(fs.readFileSync("./src/db/db_shop.json"));
 	return db.filter((e) => e.id === parseInt(idOfbook));
 };
 
 const postBook = (newBook) => {
-	const db = JSON.parse(fs.readFileSync("./src/db/db_shop.json"));
-	const newList = [...db, newBook];
-	fs.writeFileSync("./src/db/db_shop.json", JSON.stringify(newList));
+	if (dataTestfierOfNewBook(newBook).status) {
+		const newBookWTId = newBook;
+		newBookWTId.id = db[db.length - 1] ? db[db.length - 1].id + 1 : 1;
+		const newList = [...db, newBookWTId];
+		fs.writeFileSync("./src/db/db_shop.json", JSON.stringify(newList));
+	}
+	return dataTestfierOfNewBook(newBook);
 };
 
-export {getBooks, getBookById, postBook};
+const patchBook = (newAtributes, id) => {
+	const indexOfElement = db.findIndex((e) => e.id === parseInt(id));
+	console.log(typeof indexOfElement, indexOfElement);
+	if (indexOfElement >= 0) {
+		db[indexOfElement] = {...db[indexOfElement], ...newAtributes};
+		fs.writeFileSync("./src/db/db_shop.json", JSON.stringify(db));
+		return true;
+	} else {
+		return false;
+	}
+};
+
+export {getBooks, getBookById, postBook, patchBook};

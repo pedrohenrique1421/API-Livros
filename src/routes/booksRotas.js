@@ -3,6 +3,7 @@ import {
 	bookGetManagerDefault,
 	bookGetManagerById,
 	bookPostManager,
+	bookPatchManager,
 } from "../managers/booksManager.js";
 
 // Rotas do /books =====================
@@ -17,9 +18,7 @@ bookRoute.get("/:id", bookGetManagerById);
 bookRoute.post("/", bookPostManager); //NAO FUNCIONA
 
 // Rotas tipo PATCH
-bookRoute.patch("/", (req, res) => {
-	res.send("Requisição PATCH");
-});
+bookRoute.patch("/:id", bookPatchManager);
 
 // Rotas tipo DELETE -------------------
 bookRoute.delete("/", (req, res) => {
