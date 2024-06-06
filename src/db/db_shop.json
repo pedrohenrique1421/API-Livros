@@ -1,9 +1,1 @@
-[
-    {
-        "id": 0,
-        "nome": "Teste",
-        "preco": 999.9,
-        "sinopse": "sinopse boa hein",
-        "quantidade": 999
-    }
-]
+[{"id":0,"nome":"Teste","preco":999.9,"sinopse":"sinopse boa hein","quantidade":999},{"id":1,"nome":"Teste 2","preco":999.9,"sinopse":"sinopse boa hein","quantidade":999},{},{"id":12,"nome":"Teste post","preco":999.9,"sinopse":"sinopse boa hein","quantidade":999},{"id":15,"nome":"Teste post 2","preco":999.9,"sinopse":"sinopse boa hein","quantidade":999}]

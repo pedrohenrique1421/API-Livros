@@ -19,6 +19,8 @@ const InsertData = (actualData, dataToInsert, show) => {
 	}
 };
 
+
+
 export {
     InsertData
 }
