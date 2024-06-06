@@ -3,10 +3,12 @@ import {
 	getBookById,
 	postBook,
 	patchBook,
+	deleteBook,
 } from "../services/booksServices.js";
 
 // Requisicoes tipo GET -----------------
-const bookGetManagerDefault = (req, res) => {
+// Fazer o GET que retorna todos ou por atributo
+const bookGetManager = (req, res) => {
 	try {
 		if (!getBooks()) {
 			res.send("The DB is empty, :/");
@@ -16,17 +18,7 @@ const bookGetManagerDefault = (req, res) => {
 		}
 	} catch (e) {
 		res.status(500);
-		res.send("error on bookGetManagerDefault ", e.message);
-	}
-};
-
-const bookGetManagerById = (req, res) => {
-	try {
-		res.send(getBookById(req.params.id));
-		res.status(200);
-	} catch (e) {
-		res.status(500);
-		res.send("error on bookGetManagerById ");
+		res.send("error on bookGetManager ", e.message);
 	}
 };
 
@@ -38,11 +30,10 @@ const bookPostManager = (req, res) => {
 			res.status(201);
 			res.send("Item has created on th DB");
 		} else {
-			res.status(400);
-			res.send(`Error on creating: ${returnOfPosting.message}`);
+			throw new Error(`Error on creating: ${returnOfPosting.message}`);
 		}
 	} catch (e) {
-		res.status(500);
+		res.status(400);
 		res.send(e.message);
 	}
 };
@@ -55,8 +46,23 @@ const bookPatchManager = (req, res) => {
 		if (returnOfPatching) {
 			res.send("Atributes has changed");
 		} else {
-			res.status(400);
-			res.send(`Error on modifing: id dont finded`);
+			throw new Error("Error on modifing: id dont finded");
+		}
+	} catch (e) {
+		res.status(400);
+		res.send(e.message);
+	}
+};
+
+// Requisicoes tipo DELETE -----------------
+
+const bookDeleteManager = (req, res) => {
+	try {
+		const returnOfDelete = deleteBook(req.body);
+		if (returnOfDelete) {
+			res.send(returnOfDelete);
+		} else {
+			throw new Error("something its wrong");
 		}
 	} catch (e) {
 		res.status(500);
@@ -64,9 +70,4 @@ const bookPatchManager = (req, res) => {
 	}
 };
 
-export {
-	bookGetManagerDefault,
-	bookPostManager,
-	bookGetManagerById,
-	bookPatchManager,
-};
+export {bookGetManager, bookPostManager, bookPatchManager, bookDeleteManager};

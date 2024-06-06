@@ -1,18 +1,16 @@
 import {Router} from "express";
 import {
-	bookGetManagerDefault,
-	bookGetManagerById,
+	bookGetManager,
 	bookPostManager,
 	bookPatchManager,
+	bookDeleteManager,
 } from "../managers/booksManager.js";
 
 // Rotas do /books =====================
 const bookRoute = Router();
 
 // Rotas tipo GET ---------------------
-bookRoute.get("/", bookGetManagerDefault);
-
-bookRoute.get("/:id", bookGetManagerById);
+bookRoute.get("/", bookGetManager);
 
 // Rotas tipo POST -------------------
 bookRoute.post("/", bookPostManager); //NAO FUNCIONA
@@ -21,8 +19,6 @@ bookRoute.post("/", bookPostManager); //NAO FUNCIONA
 bookRoute.patch("/:id", bookPatchManager);
 
 // Rotas tipo DELETE -------------------
-bookRoute.delete("/", (req, res) => {
-	res.send("Requisição DELETE");
-});
+bookRoute.delete("/", bookDeleteManager);
 
 export default bookRoute;

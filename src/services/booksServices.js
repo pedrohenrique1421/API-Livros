@@ -37,4 +37,26 @@ const patchBook = (newAtributes, id) => {
 	}
 };
 
-export {getBooks, getBookById, postBook, patchBook};
+const deleteBook = (p) => {
+	if (Object.keys(p).length > 0) {
+		const keys = Object.keys(p);
+		let deletedElements = [];
+		keys.map((key) => {
+			const dbFiltered = db.filter((e) => e[key] !== p[key]);
+			deletedElements = [
+				...deletedElements,
+				db.filter((e) => e[key] === p[key]),
+			];
+			console.log(db.filter((e) => e[key] !== p[key]));
+			fs.writeFileSync(
+				"./src/db/db_shop.json",
+				JSON.stringify(dbFiltered)
+			);
+		});
+		return deletedElements;
+	} else {
+		return false;
+	}
+};
+
+export {getBooks, getBookById, postBook, patchBook, deleteBook};
