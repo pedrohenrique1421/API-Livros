@@ -1,6 +1,5 @@
 import {
 	getBooks,
-	getBookById,
 	postBook,
 	patchBook,
 	deleteBook,
@@ -10,15 +9,20 @@ import {
 // Fazer o GET que retorna todos ou por atributo
 const bookGetManager = (req, res) => {
 	try {
-		if (!getBooks()) {
-			res.send("The DB is empty, :/");
-			res.status(204); // No content
+		const returnofGet = getBooks(req.query.params);
+		if (typeof returnofGet === "array" || typeof returnofGet === "object") {
+			if (returnofGet[0]) {
+				res.send(getBooks(req.query.params));
+			} else {
+				throw returnofGet[1];
+			}
 		} else {
-			res.send(getBooks());
+			res.send("Parametros mulltiplos");
+			console.log(returnofGet);
 		}
 	} catch (e) {
 		res.status(500);
-		res.send("error on bookGetManager ", e.message);
+		res.send(`error on bookGetManager ${e.message}`);
 	}
 };
 
@@ -41,8 +45,9 @@ const bookPostManager = (req, res) => {
 // Requisicoes tipo PATCH -----------------
 
 const bookPatchManager = (req, res) => {
+	// A fazer
 	try {
-		const returnOfPatching = patchBook(req.body, req.params.id);
+		const returnOfPatching = patchBook(req.body, req.query.param);
 		if (returnOfPatching) {
 			res.send("Atributes has changed");
 		} else {

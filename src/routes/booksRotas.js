@@ -16,7 +16,7 @@ bookRoute.get("/", bookGetManager);
 bookRoute.post("/", bookPostManager); //NAO FUNCIONA
 
 // Rotas tipo PATCH
-bookRoute.patch("/:id", bookPatchManager);
+bookRoute.patch("/", bookPatchManager);
 
 // Rotas tipo DELETE -------------------
 bookRoute.delete("/", bookDeleteManager);

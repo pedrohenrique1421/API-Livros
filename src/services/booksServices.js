@@ -3,16 +3,37 @@ import {dataTestfierOfNewBook} from "../db/db_Manager/dataTestfiers.js";
 
 const db = JSON.parse(fs.readFileSync("./src/db/db_shop.json"));
 
-const getBooks = () => {
-	if (db.length == 0) {
-		return false;
-	} else {
-		return db;
+const getBooks = (params) => {
+	let paramsTrated = {};
+	try {
+		paramsTrated = JSON.parse(params);
+		if (typeof paramsTrated !== "object") {
+			throw new Error("Unexpected token");
+		} else {
+		}
+	} catch (e) {
+		if (params && e.message.includes("Unexpected token")) {
+			const result = db.filter((objeto) =>
+				Object.values(objeto).some(
+					(valor) =>
+						(typeof valor === "string" && valor.includes(params)) ||
+						(typeof valor == "number" && valor == params)
+				)
+			);
+			if (result.length > 0) {
+				return result;
+			} else {
+				return [false, new Error("not results")];
+			}
+		} else {
+			if (db.length == 0) {
+				return [false, new Error("Db is empty")];
+			} else {
+				return db;
+			}
+		}
 	}
-};
-
-const getBookById = (idOfbook) => {
-	return db.filter((e) => e.id === parseInt(idOfbook));
+	// const searchParams = Object.keys(paramsTrated);
 };
 
 const postBook = (newBook) => {
@@ -25,16 +46,9 @@ const postBook = (newBook) => {
 	return dataTestfierOfNewBook(newBook);
 };
 
-const patchBook = (newAtributes, id) => {
-	const indexOfElement = db.findIndex((e) => e.id === parseInt(id));
-	console.log(typeof indexOfElement, indexOfElement);
-	if (indexOfElement >= 0) {
-		db[indexOfElement] = {...db[indexOfElement], ...newAtributes};
-		fs.writeFileSync("./src/db/db_shop.json", JSON.stringify(db));
-		return true;
-	} else {
-		return false;
-	}
+const patchBook = (newAtributes, seachParam) => {
+	// 	string A capa do harry
+	// object { nome: 'A capa da invisibilidade', preco: 20.99 }
 };
 
 const deleteBook = (p) => {
@@ -59,4 +73,4 @@ const deleteBook = (p) => {
 	}
 };
 
-export {getBooks, getBookById, postBook, patchBook, deleteBook};
+export {getBooks, postBook, patchBook, deleteBook};
